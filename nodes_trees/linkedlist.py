@@ -7,9 +7,9 @@ class LinkedList():
 
     numLinks = 0
 
-    def __init__(self, head=None, prev=None):
+    def __init__(self, head=None, tail=None):
         self.head = head
-        self.prev = prev
+        self.tail = tail
 
     @classmethod
     def getNumberOfLinks(cls):
@@ -24,13 +24,17 @@ class LinkedList():
         pass
 
     @abstractmethod
-    def search(self):
+    def search(self, data):
         pass
 
     @abstractmethod
-    def delete(self):
+    def delete(self, data):
         pass
 
     @abstractmethod
-    def print_list(self):
+    def print_list_forward(self):
+        pass
+
+    @abstractmethod
+    def print_list_backward(self):
         pass
