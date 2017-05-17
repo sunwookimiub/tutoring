@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from node import Node
-from testsinglylinkedlist import SinglyLinkedList
+from singlylinkedlist import SinglyLinkedList
 
 class Stack(SinglyLinkedList):
 

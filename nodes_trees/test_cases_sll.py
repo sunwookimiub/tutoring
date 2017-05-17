@@ -1,6 +1,6 @@
 from node import Node
-from testsinglylinkedlist import SinglyLinkedList
-from testdoublylinkedlist import DoublyLinkedList
+from singlylinkedlist import SinglyLinkedList
+from doublylinkedlist import DoublyLinkedList
 from linkedlist import LinkedList
 
 """

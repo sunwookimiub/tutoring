@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from node import Node
-from testdoublylinkedlist import DoublyLinkedList
+from doublylinkedlist import DoublyLinkedList
 
 class Queue(DoublyLinkedList):
 
