@@ -3,16 +3,14 @@ from singlylinkedlist import SinglyLinkedList
 from doublylinkedlist import DoublyLinkedList
 from linkedlist import LinkedList
 
-"""
 # Test 1
-SinglyLinkedList.getNumberOfLinks()
-LinkedList.getNumberOfLinks()
+assert 1 == SinglyLinkedList.getNumberOfLinks()
+assert 0 == LinkedList.getNumberOfLinks()
 sll = SinglyLinkedList()
-sll.getNumberOfLinks()
+assert 1 == sll.getNumberOfLinks()
 dll = DoublyLinkedList()
-dll.getNumberOfLinks()
+assert 2 == dll.getNumberOfLinks()
 print "Test 1 Passed"
-"""
 
 # Test 2
 sll = SinglyLinkedList()

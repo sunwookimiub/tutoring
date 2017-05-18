@@ -13,7 +13,7 @@ class LinkedList():
 
     @classmethod
     def getNumberOfLinks(cls):
-        print cls.numLinks
+        return cls.numLinks
 
     @abstractmethod
     def insert(self, data):
