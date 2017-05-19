@@ -55,3 +55,13 @@ dll.insert(2)
 dll.insert(3)
 dll.insert(4)
 dll.print_list_backward()
+
+# Test 1
+assert 1 == SinglyLinkedList.getNumberOfLinks()
+assert 0 == LinkedList.getNumberOfLinks()
+sll = SinglyLinkedList()
+assert 1 == sll.getNumberOfLinks()
+dll = DoublyLinkedList()
+assert 2 == dll.getNumberOfLinks()
+print "Test 1 Passed"
+
