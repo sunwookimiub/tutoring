@@ -14,9 +14,11 @@ def parseArguments():
 
 def main():
     args = parseArguments()
-    trainset, testset = dtl.load_sleep()
-    regressionalgs = {'BatchGradientDescent': algs.BatchGradientDescent({}),
-                      'StochasticGradientDescent': algs.StochasticGradientDescent({})}
+#    trainset, testset = dtl.load_sleep()
+#    regressionalgs = {'BatchGradientDescent': algs.BatchGradientDescent({}),
+#                      'StochasticGradientDescent': algs.StochasticGradientDescent({})}
+    trainset, testset = dtl.load_susy()
+    regressionalgs = {'LogsiticRegression': algs.LogisticRegression({})}
     params = {'tolerance': args.tolerance, 'eta0': args.eta0, 'epochs': args.epochs}
 
     for learnername, learner in regressionalgs.iteritems():
@@ -24,7 +26,7 @@ def main():
         print "Running {0} on {1}".format(learnername, learner.params)
         learner.learn(trainset[0], trainset[1])
         predictions = learner.predict(testset[0])
-        error = utils.geterror(testset[1], predictions)
+        error = utils.geterror_classification(testset[1], predictions)
         print 'Error for {0}: {1}\n'.format(learnername, str(error))
 
 if __name__ == '__main__':

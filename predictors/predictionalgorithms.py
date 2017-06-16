@@ -74,7 +74,7 @@ class LogisticRegression(Predictor):
 
     def __init__(self, params={}):
         self.weights = None
-        self.params = {'tolerance': 0.0001, 'eta0':0.01} # Default
+        self.params = {'tolerance': 0.1, 'eta0':1.0} # Default
         self.reset(params)
 
     def crossEntropy(self, w, Xtrain, Y):
@@ -86,19 +86,18 @@ class LogisticRegression(Predictor):
         return ll
 
     def learn(self, Xtrain, ytrain):
+        n = float(Xtrain.shape[0])
         maxsteps = 10000
-        step = 1
+        step = 0
         err = float('inf')
         self.weights = np.dot(np.linalg.pinv(np.dot(Xtrain.T, Xtrain)), np.dot(Xtrain.T, ytrain))
         while ( np.abs(self.crossEntropy(self.weights, Xtrain, ytrain) - err) > self.params['tolerance'] and step < maxsteps):
-            w = self.weights
-            err = self.crossEntropy(w, Xtrain, ytrain)
-            p = utils.sigmoid(np.dot(Xtrain,w))
-            grad = -np.dot(Xtrain.T, np.subtract(ytrain,p)) + reg
-            grad = grad/float(Xtrain.shape[0])
-            w = w - self.params['eta0']*grad
+            print self.crossEntropy(self.weights, Xtrain, ytrain) - err
+            err = self.crossEntropy(self.weights, Xtrain, ytrain)
+            p = utils.sigmoid(np.dot(Xtrain,self.weights))
+            grad = 1/n * -np.dot(Xtrain.T, np.subtract(ytrain,p))
+            self.weights = self.weights - self.params['eta0']*grad
             step += 1
-            self.weights = w
         print ("Number of steps: %d" % step)
 
     def predict(self, Xtest):
