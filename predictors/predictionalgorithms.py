@@ -72,6 +72,11 @@ class StochasticGradientDescent(Predictor):
 
 class LogisticRegression(Predictor):
 
+    def __init__(self, params={}):
+        self.weights = None
+        self.params = {'tolerance': 0.0001, 'eta0':0.01} # Default
+        self.reset(params)
+
     def crossEntropy(self, w, Xtrain, Y):
         wx = np.dot(Xtrain, w)
         lhs = np.dot(Y, np.log(utils.sigmoid(wx)))
@@ -84,16 +89,14 @@ class LogisticRegression(Predictor):
         maxsteps = 10000
         step = 1
         err = float('inf')
-        tolerance = 0.0001
-        alpha = 0.01 # static stepsize
         self.weights = np.dot(np.linalg.pinv(np.dot(Xtrain.T, Xtrain)), np.dot(Xtrain.T, ytrain))
-        while ( np.abs(self.crossEntropy(self.weights, Xtrain, ytrain) - err) > tolerance and step < maxsteps):
+        while ( np.abs(self.crossEntropy(self.weights, Xtrain, ytrain) - err) > self.params['tolerance'] and step < maxsteps):
             w = self.weights
             err = self.crossEntropy(w, Xtrain, ytrain)
             p = utils.sigmoid(np.dot(Xtrain,w))
             grad = -np.dot(Xtrain.T, np.subtract(ytrain,p)) + reg
             grad = grad/float(Xtrain.shape[0])
-            w = w - alpha*grad
+            w = w - self.params['eta0']*grad
             step += 1
             self.weights = w
         print ("Number of steps: %d" % step)
