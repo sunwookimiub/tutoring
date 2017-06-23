@@ -14,11 +14,20 @@ def parseArguments():
 
 def main():
     args = parseArguments()
-#    trainset, testset = dtl.load_sleep()
-#    regressionalgs = {'BatchGradientDescent': algs.BatchGradientDescent({}),
-#                      'StochasticGradientDescent': algs.StochasticGradientDescent({})}
-    trainset, testset = dtl.load_susy()
-    regressionalgs = {'LogsiticRegression': algs.LogisticRegression({})}
+
+    # Linear Regression
+    #trainset, testset = dtl.load_sleep()
+    #regressionalgs = {'BatchGradientDescent': algs.BatchGradientDescent({}),
+    #                  'StochasticGradientDescent': algs.StochasticGradientDescent({})}
+
+    # Logistic Regression
+    #trainset, testset = dtl.load_susy()
+    #regressionalgs = {'LogsiticRegression': algs.LogisticRegression({})}
+
+    # Softmax/Multinomial Logistic Regression
+    trainset, testset = dtl.load_iris_complete()
+    regressionalgs = {'SoftmaxRegression': algs.SoftmaxRegression({})}
+
     params = {'tolerance': args.tolerance, 'eta0': args.eta0, 'epochs': args.epochs}
 
     for learnername, learner in regressionalgs.iteritems():
@@ -28,6 +37,7 @@ def main():
         predictions = learner.predict(testset[0])
         error = utils.geterror_classification(testset[1], predictions)
         print 'Error for {0}: {1}\n'.format(learnername, str(error))
+        print predictions
 
 if __name__ == '__main__':
     main()

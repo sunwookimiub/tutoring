@@ -9,7 +9,7 @@ def load_sleep():
     trainset, testset = splitdataset(dataset) #2 features - 1:coffee, 2:sleep
     return trainset, testset
 
-def load_susy(trainsize=500, testsize=1000):
+def load_susy():
     """ A physics classification dataset with 8 features """
     # --- Testing on small ---
     filename = 'susysubset.csv'
@@ -18,12 +18,52 @@ def load_susy(trainsize=500, testsize=1000):
     trainset, testset = splitdataset(dataset)    
     return trainset,testset
 
-def load_susy_complete(trainsize=500, testsize=1000):
+def load_susy_complete():
     """ A physics classification dataset """
     filename = 'susycomplete.csv'
     dataset = loadcsv(filename)
     trainset, testset = splitdataset(dataset)    
     return trainset,testset
+
+def load_iris():
+  """ Iris Flower Dataset: https://en.wikipedia.org/wiki/Iris_flower_data_set """
+  X = np.load("X_iris_subset.npy")
+  y = np.load("y_iris_subset.npy")
+
+  X = X[:, [0, 3]] # sepal length and petal width
+
+  # Normalize
+  for ii in range(X.shape[1]):
+    maxval = np.max(np.abs(X[:,ii]))
+    if maxval > 0:
+      X[:,ii] = np.divide(X[:,ii], maxval)
+
+    # standardize (performs better)
+    #X[:,ii] = (X[:,ii] - X[:,ii].mean()) / X[:,ii].std()
+
+  X = np.hstack((X,np.ones((X.shape[0],1))))
+
+  return ((X,y),(X,y))
+
+def load_iris_complete():
+  """ Iris Flower Dataset: https://en.wikipedia.org/wiki/Iris_flower_data_set """
+  X = np.load("X_iris.npy")
+  y = np.load("y_iris.npy")
+
+  X = X[:, [0, 3]] # sepal length and petal width
+
+  # Normalize
+  for ii in range(X.shape[1]):
+    maxval = np.max(np.abs(X[:,ii]))
+    if maxval > 0:
+      X[:,ii] = np.divide(X[:,ii], maxval)
+
+    # standardize (performs better)
+    #X[:,ii] = (X[:,ii] - X[:,ii].mean()) / X[:,ii].std()
+
+  X = np.hstack((X,np.ones((X.shape[0],1))))
+
+  return ((X,y),(X,y))
 
 def splitdataset(dataset, target=-1):
     s = int(dataset.shape[0]*0.8)
