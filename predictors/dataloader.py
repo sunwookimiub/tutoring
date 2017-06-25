@@ -5,14 +5,14 @@ def loadcsv(filename):
     return dataset
 
 def load_sleep():
-    dataset = loadcsv('sleep_data.csv')
+    dataset = loadcsv('datasets/sleep_data.csv')
     trainset, testset = splitdataset(dataset) #2 features - 1:coffee, 2:sleep
     return trainset, testset
 
 def load_susy():
     """ A physics classification dataset with 8 features """
     # --- Testing on small ---
-    filename = 'susysubset.csv'
+    filename = 'datasets/susysubset.csv'
     dataset = loadcsv(filename)
     # ------
     trainset, testset = splitdataset(dataset)    
@@ -20,15 +20,15 @@ def load_susy():
 
 def load_susy_complete():
     """ A physics classification dataset """
-    filename = 'susycomplete.csv'
+    filename = 'datasets/susycomplete.csv'
     dataset = loadcsv(filename)
     trainset, testset = splitdataset(dataset)    
     return trainset,testset
 
 def load_iris():
   """ Iris Flower Dataset: https://en.wikipedia.org/wiki/Iris_flower_data_set """
-  X = np.load("X_iris_subset.npy")
-  y = np.load("y_iris_subset.npy")
+  X = np.load("datasets/X_iris_subset.npy")
+  y = np.load("datasets/y_iris_subset.npy")
 
   X = X[:, [0, 3]] # sepal length and petal width
 
@@ -47,8 +47,8 @@ def load_iris():
 
 def load_iris_complete():
   """ Iris Flower Dataset: https://en.wikipedia.org/wiki/Iris_flower_data_set """
-  X = np.load("X_iris.npy")
-  y = np.load("y_iris.npy")
+  X = np.load("datasets/X_iris.npy")
+  y = np.load("datasets/y_iris.npy")
 
   X = X[:, [0, 3]] # sepal length and petal width
 
