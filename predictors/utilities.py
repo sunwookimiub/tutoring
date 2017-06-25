@@ -41,3 +41,17 @@ def dsigmoid(xvec):
     """ Gradient of standard sigmoid 1/(1+e^-x) """
     vecsig = sigmoid(xvec)
     return vecsig * (1 - vecsig)
+
+def one_class_softmax(W,X,i,k):
+    wk = W[:,k].reshape(W.shape[0],1)
+    return np.exp(np.dot(wk.T,X[i]))/np.sum(np.exp(np.dot(W.T,X[i])))
+
+def all_class_softmax(W, X):
+    return (np.exp(np.dot(X,W).T)/np.sum(np.exp(np.dot(X,W)),axis=1)).T
+
+def one_hot_encoding(y, n_labels):
+    mat = np.zeros((len(y), n_labels))
+    for i, val in enumerate(y):
+        mat[i, val] = 1
+    return mat 
+

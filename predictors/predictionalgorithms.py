@@ -121,35 +121,22 @@ class SoftmaxRegression(Predictor):
         self.weights = np.random.rand(m, self.K) #num features x num classes
 
         for i in range(self.params['epochs']):
-            softm = self.all_class_softmax(self.weights, X)
-            diff = softm - self.one_hot_encoding(y, self.K)
+            softm = utils.all_class_softmax(self.weights, X)
+            diff = softm - utils.one_hot_encoding(y, self.K)
             g = np.dot(X.T, diff)/n 
             self.weights -= g
 
             # print (self.softmax_cost_fn(self.weights,X,y)) # compute cost of the whole epoch
         return self
    
-    def one_class_softmax(self, W,X,i,k):
-        wk = W[:,k].reshape(W.shape[0],1)
-        return np.exp(np.dot(wk.T,X[i]))/np.sum(np.exp(np.dot(W.T,X[i])))
-
-    def all_class_softmax(self, W, X):
-       return (np.exp(np.dot(X,W).T)/np.sum(np.exp(np.dot(X,W)),axis=1)).T
-
-    def one_hot_encoding(self, y, n_labels):
-        mat = np.zeros((len(y), n_labels))
-        for i, val in enumerate(y):
-            mat[i, val] = 1
-        return mat 
-
-    def softmax_cost_fn(self,W,X,Y):
+    def softmax_cost_fn(self,W,X,y):
         return np.sum(self.cross_entropy(W, X, y))/X.shape[0]
 
-    def cross_entropy(self,W,X,Y):
-        return np.negative(np.sum(np.log(self.all_class_softmax(W, X)) * self.one_hot_encoding(y,self.K), axis=1))
+    def cross_entropy(self,W,X,y):
+        return np.negative(np.sum(np.log(utils.all_class_softmax(W, X)) * utils.one_hot_encoding(y,self.K), axis=1))
 
     def predict(self, X):
         n = X.shape[0]
         net = np.dot(X, self.weights)
-        softm = self.all_class_softmax(self.weights, X)
+        softm = utils.all_class_softmax(self.weights, X)
         return softm.argmax(axis=1)
