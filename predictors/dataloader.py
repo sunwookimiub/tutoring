@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.io as sio
 
 def loadcsv(filename):
     dataset = np.genfromtxt(filename,delimiter=',')
@@ -64,6 +65,14 @@ def load_iris_complete():
   X = np.hstack((X,np.ones((X.shape[0],1))))
 
   return ((X,y),(X,y))
+
+def load_conc():
+    X = sio.loadmat("datasets/concentric.mat")['X'] # 2 x 152 matrix
+    X = X.T
+    y = np.load('datasets/concentric_y.npy')
+
+    return ((X,y),(X,y))
+    
 
 def splitdataset(dataset, target=-1):
     s = int(dataset.shape[0]*0.8)

@@ -127,7 +127,6 @@ class SoftmaxRegression(Predictor):
             self.weights -= g
 
             # print (self.softmax_cost_fn(self.weights,X,y)) # compute cost of the whole epoch
-        return self
    
     def softmax_cost_fn(self,W,X,y):
         return np.sum(self.cross_entropy(W, X, y))/X.shape[0]
@@ -140,3 +139,64 @@ class SoftmaxRegression(Predictor):
         net = np.dot(X, self.weights)
         softm = utils.all_class_softmax(self.weights, X)
         return softm.argmax(axis=1)
+
+
+class RBFKernel(Predictor):
+
+    def __init__(self, params={}):
+        self.weights = None
+        self.params = {'tolerance': 0.0, 'eta0': 0.0, 'scale': 0.0}
+        self.reset(params)
+
+    def Errw(self, X, y):
+        Xwmy = utils.sigmoid(np.dot(X, self.weights)) - y
+        Errw = np.dot(Xwmy.T,Xwmy) 
+        return Errw/2.0
+
+    def learn(self, X, y):
+        X = self.transform(X)
+        n,m = X.shape
+        self.weights = np.random.normal(loc=0, scale=self.params['scale'],size=4) # random weights
+        tot_error = np.inf
+        preverror = 0
+        while (np.abs(self.Errw(X,y) - preverror) > self.params['tolerance']):
+            preverror = self.Errw(X,y)
+            grad = np.dot( X.T, (y - utils.sigmoid(np.dot(self.weights, X.T))) * utils.dsigmoid(np.dot(self.weights, X.T)) )
+            self.weights = self.weights + self.params['eta0'] * grad
+   
+    def rbf_kernel(self, X):
+        sigma = 0.5
+        K = np.zeros((152,152))
+        i = 0
+        j = 0
+        for xi in X:
+            for xj in X:
+                K[i][j] = np.exp(-np.power(np.linalg.norm(xi-xj),2) / np.power(sigma, 2))
+                j += 1
+            j = 0
+            i += 1
+        return K
+        # Or 
+        # from scipy.spatial.distance import pdist, squareform
+        # np.exp(-np.power(squareform(pdist(X, 'euclidean')),2)/np.power(sigma,2))
+        # np.exp(-(squareform(pdist(X, 'sqeuclidean')))/np.power(sigma,2))
+
+    def transform(self, X):
+        K = self.rbf_kernel(X)
+        w,v = np.linalg.eig(K)
+        Z = v[:,:3].real
+        new_X = np.zeros((152,4))
+        for i in range(152):
+            new_X[i] = np.hstack((Z[i],1))
+        return new_X
+        #ax = plt.subplot(111, projection='3d')
+        #colors = ['r', 'g', 'b']
+        #ax.scatter3D(Z[:, 0], Z[:, 1], Z[:, 2], c=colors)
+        #plt.show()
+
+    def predict(self, X):
+        X = self.transform(X)
+        testing = utils.sigmoid(np.dot(self.weights, X.T))
+        output = (testing > 0.5) * 1.0
+        return output
+
